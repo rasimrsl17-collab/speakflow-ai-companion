@@ -14,8 +14,8 @@ const Practice = () => {
   const [scenario, setScenario] = useState("Restaurant");
   const [difficulty, setDifficulty] = useState("Intermediate");
   const [timer, setTimer] = useState(0);
-  const [messages, setMessages] = useState([
-    { role: "ai" as const, text: "Hello! Let's practice ordering at a restaurant today. Imagine you just walked into a nice restaurant. The waiter approaches you. What would you say?" },
+  const [messages, setMessages] = useState<{ role: "ai" | "user"; text: string }[]>([
+    { role: "ai", text: "Hello! Let's practice ordering at a restaurant today. Imagine you just walked into a nice restaurant. The waiter approaches you. What would you say?" },
   ]);
   const [transcript, setTranscript] = useState("");
   const [sessionStats, setSessionStats] = useState({ pronunciation: 78, wordsSpoken: 0, errors: 0, newWords: [] as string[] });
