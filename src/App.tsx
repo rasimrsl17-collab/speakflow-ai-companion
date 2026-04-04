@@ -11,6 +11,8 @@ import Dashboard from "./pages/Dashboard";
 import Practice from "./pages/Practice";
 import Progress from "./pages/Progress";
 import Settings from "./pages/Settings";
+import ForgotPassword from "./pages/ForgotPassword";
+import VerifyEmail from "./pages/VerifyEmail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
