@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import AppLayout from "@/components/AppLayout";
 import Landing from "./pages/Landing";
 import Auth from "./pages/Auth";
 import Onboarding from "./pages/Onboarding";
@@ -22,6 +23,12 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
 };
 
+const AuthenticatedPage = ({ children }: { children: React.ReactNode }) => (
+  <ProtectedRoute>
+    <AppLayout>{children}</AppLayout>
+  </ProtectedRoute>
+);
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
@@ -36,10 +43,11 @@ const App = () => (
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
-            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-            <Route path="/practice" element={<ProtectedRoute><Practice /></ProtectedRoute>} />
-            <Route path="/progress" element={<ProtectedRoute><Progress /></ProtectedRoute>} />
-            <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+            <Route path="/dashboard" element={<AuthenticatedPage><Dashboard /></AuthenticatedPage>} />
+            <Route path="/practice" element={<AuthenticatedPage><Practice /></AuthenticatedPage>} />
+            <Route path="/progress" element={<AuthenticatedPage><Progress /></AuthenticatedPage>} />
+            <Route path="/settings" element={<AuthenticatedPage><Settings /></AuthenticatedPage>} />
+            <Route path="/vocabulary" element={<AuthenticatedPage><div className="p-6 text-center text-muted-foreground">Library — Coming Soon</div></AuthenticatedPage>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
