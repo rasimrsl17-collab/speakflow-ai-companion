@@ -14,6 +14,7 @@ import Progress from "./pages/Progress";
 import Settings from "./pages/Settings";
 import ForgotPassword from "./pages/ForgotPassword";
 import VerifyEmail from "./pages/VerifyEmail";
+import Vocabulary from "./pages/Vocabulary";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
