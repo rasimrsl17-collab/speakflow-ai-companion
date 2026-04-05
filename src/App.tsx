@@ -48,7 +48,7 @@ const App = () => (
             <Route path="/practice" element={<AuthenticatedPage><Practice /></AuthenticatedPage>} />
             <Route path="/progress" element={<AuthenticatedPage><Progress /></AuthenticatedPage>} />
             <Route path="/settings" element={<AuthenticatedPage><Settings /></AuthenticatedPage>} />
-            <Route path="/vocabulary" element={<AuthenticatedPage><div className="p-6 text-center text-muted-foreground">Library — Coming Soon</div></AuthenticatedPage>} />
+            <Route path="/vocabulary" element={<AuthenticatedPage><Vocabulary /></AuthenticatedPage>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
