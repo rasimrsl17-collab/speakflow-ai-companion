@@ -17,6 +17,10 @@ import VerifyEmail from "./pages/VerifyEmail";
 import Vocabulary from "./pages/Vocabulary";
 import History from "./pages/History";
 import Lessons from "./pages/Lessons";
+import Help from "./pages/Help";
+import Referral from "./pages/Referral";
+import PaymentSuccess from "./pages/PaymentSuccess";
+import PaymentFailed from "./pages/PaymentFailed";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -53,6 +57,10 @@ const App = () => (
             <Route path="/vocabulary" element={<AuthenticatedPage><Vocabulary /></AuthenticatedPage>} />
             <Route path="/history" element={<AuthenticatedPage><History /></AuthenticatedPage>} />
             <Route path="/lessons" element={<AuthenticatedPage><Lessons /></AuthenticatedPage>} />
+            <Route path="/help" element={<AuthenticatedPage><Help /></AuthenticatedPage>} />
+            <Route path="/referral" element={<AuthenticatedPage><Referral /></AuthenticatedPage>} />
+            <Route path="/payment/success" element={<AuthenticatedPage><PaymentSuccess /></AuthenticatedPage>} />
+            <Route path="/payment/failed" element={<AuthenticatedPage><PaymentFailed /></AuthenticatedPage>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
