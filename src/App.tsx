@@ -16,6 +16,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import VerifyEmail from "./pages/VerifyEmail";
 import Vocabulary from "./pages/Vocabulary";
 import History from "./pages/History";
+import Lessons from "./pages/Lessons";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -51,6 +52,7 @@ const App = () => (
             <Route path="/settings" element={<AuthenticatedPage><Settings /></AuthenticatedPage>} />
             <Route path="/vocabulary" element={<AuthenticatedPage><Vocabulary /></AuthenticatedPage>} />
             <Route path="/history" element={<AuthenticatedPage><History /></AuthenticatedPage>} />
+            <Route path="/lessons" element={<AuthenticatedPage><Lessons /></AuthenticatedPage>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
