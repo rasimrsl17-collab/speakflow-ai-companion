@@ -27,6 +27,7 @@ import {
 const desktopLinks = [
   { to: "/dashboard", label: "Dashboard" },
   { to: "/practice", label: "Practice" },
+  { to: "/lessons", label: "Lessons" },
   { to: "/progress", label: "Progress" },
   { to: "/vocabulary", label: "Library" },
 ];
