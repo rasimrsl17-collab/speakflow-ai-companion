@@ -50,6 +50,7 @@ const App = () => (
             <Route path="/progress" element={<AuthenticatedPage><Progress /></AuthenticatedPage>} />
             <Route path="/settings" element={<AuthenticatedPage><Settings /></AuthenticatedPage>} />
             <Route path="/vocabulary" element={<AuthenticatedPage><Vocabulary /></AuthenticatedPage>} />
+            <Route path="/history" element={<AuthenticatedPage><History /></AuthenticatedPage>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

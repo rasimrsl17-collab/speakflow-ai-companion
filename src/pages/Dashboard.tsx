@@ -182,7 +182,12 @@ const Dashboard = () => {
 
         {/* Recent sessions */}
         <div className="glass rounded-2xl p-6">
-          <h2 className="font-bold text-lg mb-4">Recent Sessions</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-bold text-lg">Recent Sessions</h2>
+            <button onClick={() => navigate("/history")} className="text-sm text-primary hover:text-primary/80 font-medium flex items-center gap-1 transition-colors">
+              View All <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
           <div className="space-y-2">
             {mockRecentSessions.map((s) => (
               <div key={s.id} className="flex items-center justify-between py-3 border-b border-border/30 last:border-0 hover:bg-surface-hover/30 rounded-lg px-2 transition-colors cursor-pointer">
