@@ -57,6 +57,10 @@ const App = () => (
             <Route path="/vocabulary" element={<AuthenticatedPage><Vocabulary /></AuthenticatedPage>} />
             <Route path="/history" element={<AuthenticatedPage><History /></AuthenticatedPage>} />
             <Route path="/lessons" element={<AuthenticatedPage><Lessons /></AuthenticatedPage>} />
+            <Route path="/help" element={<AuthenticatedPage><Help /></AuthenticatedPage>} />
+            <Route path="/referral" element={<AuthenticatedPage><Referral /></AuthenticatedPage>} />
+            <Route path="/payment/success" element={<AuthenticatedPage><PaymentSuccess /></AuthenticatedPage>} />
+            <Route path="/payment/failed" element={<AuthenticatedPage><PaymentFailed /></AuthenticatedPage>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
