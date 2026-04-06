@@ -15,6 +15,7 @@ import Settings from "./pages/Settings";
 import ForgotPassword from "./pages/ForgotPassword";
 import VerifyEmail from "./pages/VerifyEmail";
 import Vocabulary from "./pages/Vocabulary";
+import History from "./pages/History";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -49,6 +50,7 @@ const App = () => (
             <Route path="/progress" element={<AuthenticatedPage><Progress /></AuthenticatedPage>} />
             <Route path="/settings" element={<AuthenticatedPage><Settings /></AuthenticatedPage>} />
             <Route path="/vocabulary" element={<AuthenticatedPage><Vocabulary /></AuthenticatedPage>} />
+            <Route path="/history" element={<AuthenticatedPage><History /></AuthenticatedPage>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
