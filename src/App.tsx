@@ -17,6 +17,10 @@ import VerifyEmail from "./pages/VerifyEmail";
 import Vocabulary from "./pages/Vocabulary";
 import History from "./pages/History";
 import Lessons from "./pages/Lessons";
+import Help from "./pages/Help";
+import Referral from "./pages/Referral";
+import PaymentSuccess from "./pages/PaymentSuccess";
+import PaymentFailed from "./pages/PaymentFailed";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
