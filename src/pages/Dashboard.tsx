@@ -6,6 +6,9 @@ import { Flame, LogOut, Mic, TrendingUp, BookOpen, BarChart3, ChevronRight, Chec
 import { DashboardSkeleton } from "@/components/PageSkeleton";
 import EmptyState from "@/components/EmptyState";
 import ErrorState from "@/components/ErrorState";
+import { useCustomToast } from "@/components/CustomToast";
+import { ConfirmDialog, StreakLostModal, LevelUpModal, UpgradeModal } from "@/components/Modal";
+import WalkthroughTour from "@/components/WalkthroughTour";
 
 const WEEK_DAYS = ["M", "T", "W", "T", "F", "S", "S"];
 const COMPLETED_DAYS = [true, true, true, true, false, false, false];
@@ -14,6 +17,7 @@ const TODAY_INDEX = 4;
 const Dashboard = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { showToast } = useCustomToast();
   const hour = new Date().getHours();
   const greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
 
@@ -21,12 +25,20 @@ const Dashboard = () => {
   const [error, setError] = useState(false);
   const [showAiRec, setShowAiRec] = useState(true);
   const [showTip, setShowTip] = useState(true);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const [showStreakLost, setShowStreakLost] = useState(false);
+  const [showLevelUp, setShowLevelUp] = useState(false);
+  const [showUpgrade, setShowUpgrade] = useState(false);
 
-  // Simulate loading
   const hasSessions = mockRecentSessions.length > 0;
 
   useEffect(() => {
-    const t = setTimeout(() => setLoading(false), 1200);
+    const t = setTimeout(() => {
+      setLoading(false);
+      showToast("success", "Welcome back! 👋");
+      // Mock: show streak lost after 3s
+      setTimeout(() => setShowStreakLost(true), 3000);
+    }, 1200);
     return () => clearTimeout(t);
   }, []);
 
@@ -73,14 +85,14 @@ const Dashboard = () => {
             <h1 className="text-lg font-bold">{greeting}, {user?.name || "Learner"}!</h1>
           </div>
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-1 glass px-3 py-1.5 rounded-full">
+            <div id="tour-streak" className="flex items-center gap-1 glass px-3 py-1.5 rounded-full">
               <Flame className="w-4 h-4 text-accent" />
               <span className="text-sm font-bold">{user?.streak || 14} day streak</span>
             </div>
             <button onClick={() => navigate("/settings")} className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-bold text-primary hover:bg-primary/30 transition-colors">
               {user?.name?.[0] || "A"}
             </button>
-            <button onClick={() => { logout(); navigate("/"); }} className="text-muted-foreground hover:text-foreground transition-colors">
+            <button onClick={() => setShowLogoutConfirm(true)} className="text-muted-foreground hover:text-foreground transition-colors">
               <LogOut className="w-4 h-4" />
             </button>
           </div>
@@ -155,7 +167,7 @@ const Dashboard = () => {
             </button>
           </div>
 
-          <div className="glass rounded-2xl p-6">
+          <div id="tour-weak-areas" className="glass rounded-2xl p-6">
             <h2 className="font-bold text-lg mb-4">Your Weak Areas</h2>
             <div className="space-y-3">
               {mockWeakAreas.map((area) => (
@@ -252,11 +264,28 @@ const Dashboard = () => {
 
         {/* Bottom nav */}
         <div className="flex justify-center gap-4 pb-8">
-          <button onClick={() => navigate("/progress")} className="glass rounded-xl px-6 py-3 text-sm font-medium hover:bg-surface-hover transition-all">📊 Progress</button>
-          <button onClick={() => navigate("/practice")} className="bg-primary text-primary-foreground rounded-xl px-6 py-3 text-sm font-medium hover:bg-primary/90 transition-all glow-primary-sm">🎤 Practice</button>
+          <button id="tour-progress" onClick={() => navigate("/progress")} className="glass rounded-xl px-6 py-3 text-sm font-medium hover:bg-surface-hover transition-all">📊 Progress</button>
+          <button id="tour-practice" onClick={() => navigate("/practice")} className="bg-primary text-primary-foreground rounded-xl px-6 py-3 text-sm font-medium hover:bg-primary/90 transition-all glow-primary-sm">🎤 Practice</button>
           <button onClick={() => navigate("/settings")} className="glass rounded-xl px-6 py-3 text-sm font-medium hover:bg-surface-hover transition-all">⚙️ Settings</button>
         </div>
       </main>
+
+      {/* Modals */}
+      <ConfirmDialog
+        open={showLogoutConfirm}
+        onClose={() => setShowLogoutConfirm(false)}
+        onConfirm={() => { logout(); navigate("/"); }}
+        title="Log Out"
+        description="Are you sure you want to log out?"
+        confirmLabel="Log Out"
+        destructive
+      />
+      <StreakLostModal open={showStreakLost} onClose={() => setShowStreakLost(false)} onStartPractice={() => navigate("/practice")} />
+      <LevelUpModal open={showLevelUp} onClose={() => setShowLevelUp(false)} />
+      <UpgradeModal open={showUpgrade} onClose={() => setShowUpgrade(false)} />
+
+      {/* Walkthrough */}
+      <WalkthroughTour />
     </div>
   );
 };
