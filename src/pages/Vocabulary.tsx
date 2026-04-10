@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, Volume2, ChevronDown, ChevronUp, BookOpen, ChevronRight, Filter } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { VocabularySkeleton } from "@/components/PageSkeleton";
 
 type Strength = "strong" | "moderate" | "weak";
 
@@ -54,6 +55,14 @@ const Vocabulary = () => {
   const [sort, setSort] = useState<(typeof sorts)[number]>("Recently Learned");
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [showSort, setShowSort] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const t = setTimeout(() => setLoading(false), 1200);
+    return () => clearTimeout(t);
+  }, []);
+
+  if (loading) return <VocabularySkeleton />;
 
   const totalWords = 347;
   const strongCount = 210;
