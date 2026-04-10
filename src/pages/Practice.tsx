@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Mic, MicOff, Volume2, Lightbulb, Square, ChevronRight, Star, TrendingUp, TrendingDown, CheckCircle, Pin, X } from "lucide-react";
+import { useCustomToast } from "@/components/CustomToast";
 
 type MicState = "idle" | "recording" | "processing";
 type Phase = "select" | "session" | "complete" | "mic-denied";
@@ -45,6 +46,7 @@ const mockCompleteStats = {
 
 const Practice = () => {
   const navigate = useNavigate();
+  const { showToast } = useCustomToast();
   const [phase, setPhase] = useState<Phase>("select");
   const [micState, setMicState] = useState<MicState>("idle");
   const [scenario, setScenario] = useState("Restaurant");
@@ -70,6 +72,7 @@ const Practice = () => {
   const handleStartSession = () => {
     setPhase("session");
     setTimer(0);
+    showToast("info", "Tip: Speak naturally, don't worry about mistakes!");
   };
 
   const handleEndSession = () => {
