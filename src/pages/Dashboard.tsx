@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { mockStats, mockWeakAreas, mockRecentSessions } from "@/lib/mockData";
 import { useNavigate } from "react-router-dom";
-import { Flame, LogOut, Mic, TrendingUp, BookOpen, BarChart3, ChevronRight, Check, Sparkles, X, Lightbulb } from "lucide-react";
+import { Flame, LogOut, Mic, TrendingUp, BookOpen, BarChart3, ChevronRight, Check, Sparkles, X } from "lucide-react";
+import { DashboardSkeleton } from "@/components/PageSkeleton";
+import EmptyState from "@/components/EmptyState";
+import ErrorState from "@/components/ErrorState";
 
 const WEEK_DAYS = ["M", "T", "W", "T", "F", "S", "S"];
-const COMPLETED_DAYS = [true, true, true, true, false, false, false]; // M-Th completed
-const TODAY_INDEX = 4; // Friday
+const COMPLETED_DAYS = [true, true, true, true, false, false, false];
+const TODAY_INDEX = 4;
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
@@ -14,8 +17,44 @@ const Dashboard = () => {
   const hour = new Date().getHours();
   const greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
 
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [showAiRec, setShowAiRec] = useState(true);
   const [showTip, setShowTip] = useState(true);
+
+  // Simulate loading
+  const hasSessions = mockRecentSessions.length > 0;
+
+  useEffect(() => {
+    const t = setTimeout(() => setLoading(false), 1200);
+    return () => clearTimeout(t);
+  }, []);
+
+  if (loading) return <DashboardSkeleton />;
+
+  if (error) return <ErrorState variant="server" onRetry={() => { setError(false); setLoading(true); setTimeout(() => setLoading(false), 1200); }} />;
+
+  if (!hasSessions) {
+    return (
+      <div className="min-h-screen bg-background">
+        <header className="glass border-b border-border/30 px-4 py-4 sticky top-0 z-40">
+          <div className="container mx-auto flex items-center justify-between">
+            <h1 className="text-lg font-bold">{greeting}, {user?.name || "Learner"}!</h1>
+            <button onClick={() => { logout(); navigate("/"); }} className="text-muted-foreground hover:text-foreground transition-colors">
+              <LogOut className="w-4 h-4" />
+            </button>
+          </div>
+        </header>
+        <EmptyState
+          icon={<span className="text-3xl">🎉</span>}
+          title="Welcome to SpeakFlow!"
+          description="You haven't started any sessions yet. Let's change that!"
+          actionLabel="Start Your First Session"
+          actionTo="/practice"
+        />
+      </div>
+    );
+  }
 
   const statCards = [
     { label: "Sessions This Week", value: mockStats.sessionsThisWeek, icon: Mic },
@@ -28,7 +67,6 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Top bar */}
       <header className="glass border-b border-border/30 px-4 py-4 sticky top-0 z-40">
         <div className="container mx-auto flex items-center justify-between">
           <div>
@@ -50,8 +88,7 @@ const Dashboard = () => {
       </header>
 
       <main className="container mx-auto px-4 py-8 space-y-6">
-
-        {/* Quick Action — Continue where you left off */}
+        {/* Quick Action */}
         <div className="rounded-2xl p-6 bg-gradient-to-r from-primary/20 via-primary/10 to-transparent border border-primary/20">
           <p className="text-sm text-muted-foreground mb-1">Continue where you left off</p>
           <h2 className="font-bold text-lg mb-2">Restaurant Ordering</h2>
@@ -86,15 +123,13 @@ const Dashboard = () => {
           <div className="flex items-center justify-center gap-3 mb-4">
             {WEEK_DAYS.map((day, i) => (
               <div key={i} className="flex flex-col items-center gap-1.5">
-                <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all ${
-                    COMPLETED_DAYS[i]
-                      ? "bg-primary text-primary-foreground"
-                      : i === TODAY_INDEX
-                        ? "border-2 border-primary text-primary animate-pulse"
-                        : "border-2 border-muted-foreground/30 text-muted-foreground"
-                  }`}
-                >
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all ${
+                  COMPLETED_DAYS[i]
+                    ? "bg-primary text-primary-foreground"
+                    : i === TODAY_INDEX
+                      ? "border-2 border-primary text-primary animate-pulse"
+                      : "border-2 border-muted-foreground/30 text-muted-foreground"
+                }`}>
                   {COMPLETED_DAYS[i] ? <Check className="w-4 h-4" /> : day}
                 </div>
                 <span className="text-[10px] text-muted-foreground">{day}</span>
@@ -109,7 +144,6 @@ const Dashboard = () => {
 
         {/* Main cards */}
         <div className="grid lg:grid-cols-2 gap-6">
-          {/* Continue Learning */}
           <div className="glass rounded-2xl p-6 glow-primary-sm">
             <h2 className="font-bold text-lg mb-2">Continue Learning</h2>
             <p className="text-muted-foreground text-sm mb-4">Restaurant Ordering — 60% complete</p>
@@ -121,7 +155,6 @@ const Dashboard = () => {
             </button>
           </div>
 
-          {/* Weak areas */}
           <div className="glass rounded-2xl p-6">
             <h2 className="font-bold text-lg mb-4">Your Weak Areas</h2>
             <div className="space-y-3">

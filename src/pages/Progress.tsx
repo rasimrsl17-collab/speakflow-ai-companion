@@ -1,15 +1,36 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { mockProgressData } from "@/lib/mockData";
-import { ArrowLeft, TrendingUp, TrendingDown, Lock } from "lucide-react";
+import { ArrowLeft, TrendingUp, TrendingDown, Lock, BarChart3 } from "lucide-react";
 import { LineChart, Line, BarChart, Bar, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { ProgressSkeleton } from "@/components/PageSkeleton";
+import EmptyState from "@/components/EmptyState";
+import ErrorState from "@/components/ErrorState";
 
 const tabs = ["This Week", "This Month", "All Time"];
 
 const Progress = () => {
   const [activeTab, setActiveTab] = useState("This Month");
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const data = mockProgressData;
+
+  useEffect(() => {
+    const t = setTimeout(() => setLoading(false), 1500);
+    return () => clearTimeout(t);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <header className="glass border-b border-border/30 px-4 py-3 flex items-center gap-3 sticky top-0 z-40">
+          <button onClick={() => navigate("/dashboard")} className="text-muted-foreground hover:text-foreground transition-colors"><ArrowLeft className="w-5 h-5" /></button>
+          <h1 className="font-bold">Progress & Analytics</h1>
+        </header>
+        <ProgressSkeleton />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
