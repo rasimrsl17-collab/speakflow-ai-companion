@@ -167,7 +167,7 @@ const Dashboard = () => {
             </button>
           </div>
 
-          <div className="glass rounded-2xl p-6">
+          <div id="tour-weak-areas" className="glass rounded-2xl p-6">
             <h2 className="font-bold text-lg mb-4">Your Weak Areas</h2>
             <div className="space-y-3">
               {mockWeakAreas.map((area) => (
